@@ -14,6 +14,7 @@ public class Esinelista {
     private int esineID = 0;
     private String nimi;
     private int teho;
+    private int puolustus;
 
     public Esinelista(int esineID, String nimi, int teho) {
         this.esineID = esineID;
@@ -37,5 +38,20 @@ public class Esinelista {
     public void setTeho(int teho) {
         this.teho = teho;
     }
+
+    public int getPuolustus() {
+        return puolustus;
+    }
+
+    public void setPuolustus(int puolustus) {
+        this.puolustus = puolustus;
+    }
+    
+
+    @Override
+    public String toString() {
+        return "Esinelista{" + "esineID=" + esineID + ", nimi=" + nimi + ", teho=" + teho + ", puolustus=" + puolustus + '}';
+    }
+    
     
 }
