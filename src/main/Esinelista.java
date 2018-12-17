@@ -14,13 +14,20 @@ public class Esinelista {
     private int esineID = 0;
     private String nimi;
     private int teho;
-    private int puolustus;
+    private int kesto;
 
-    public Esinelista(int esineID, String nimi, int teho) {
+    public Esinelista(int esineID, String nimi, int teho, int kesto) {
         this.esineID = esineID;
         this.nimi = nimi;
         this.teho = teho;
+        this.kesto = kesto;
 
+    }
+
+    public Esinelista(String nimi, int teho, int kesto) {
+        this.nimi = nimi;
+        this.teho = teho;
+        this.kesto = kesto;
     }
 
     public String getNimi() {
@@ -39,19 +46,17 @@ public class Esinelista {
         this.teho = teho;
     }
 
-    public int getPuolustus() {
-        return puolustus;
+    public int getKesto() {
+        return kesto;
     }
 
-    public void setPuolustus(int puolustus) {
-        this.puolustus = puolustus;
+    public void setKesto(int kesto) {
+        this.kesto = kesto;
     }
-    
 
     @Override
     public String toString() {
-        return "Esinelista{" + "esineID=" + esineID + ", nimi=" + nimi + ", teho=" + teho + ", puolustus=" + puolustus + '}';
+        return "Esine{" + "esineID=" + esineID + ", nimi=" + nimi + ", teho=" + teho + ", kesto=" + kesto + '}';
     }
-    
-    
+
 }

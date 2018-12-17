@@ -8,6 +8,7 @@ package main;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 
 /**
@@ -16,73 +17,54 @@ import java.util.ArrayList;
  */
 public class Tietokanta {
 
-    private String esineUusiAseSQL = "insert into Esinelista(nimi,teho) values (?,?)";
-    private String esineUusiPanssariSQL = "insert into Esinelista(nimi, puolustus) values (?,?)";
+    private String esineUusiAseSQL = "insert into Esinelista(nimi,teho,kesto) values (?,?,?)";
     private String esineHakuSQL = "select * from Esinelista order by ? DESC";
 
-    public ArrayList Esinelista() {
+    public void esineAse (Esinelista pyssy) {
         Connection yhteys = null;
-        /*
-    Tehdään try-catch rakenne, joka testaa onko tietokantayhteydessä ongelmia
-    try-kohta kertoo mitä yritetään tehdä. Catch kertoo mitä tehdään jos ei onnistu.
-         */
+        
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             yhteys = DriverManager.getConnection("jdbc:mysql://10.9.0.60/s1800591", "s1800591", "oxZBgd9j");
-            // Javan puolella ei haittaa vaik insertit ois pienellä.
-
+            
             PreparedStatement aseLisays = yhteys.prepareStatement(esineUusiAseSQL);
-
-            aseLisays.setString(1, ase.getNimi());
-            aseLisays.setInt(2, ase.getTeho());
+            
+            aseLisays.setString(1, pyssy.getNimi());
+            aseLisays.setInt(2, pyssy.getTeho());
+            aseLisays.setInt(3, pyssy.getKesto());
 
             aseLisays.executeUpdate();
-
-        } catch (Exception e) {
-            System.out.println("Tapahtui virhe " + e);
-            e.printStackTrace();
-        }
-        return 
-    }
-
-    public void esinePanssari(Esinelista panssari) {
-        Connection yhteys = null;
-
-        try {
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
-            yhteys = DriverManager.getConnection("jdbc:mysql://10.9.0.60/s1800591", "s1800591", "oxZBgd9j");
-            // Javan puolella ei haittaa vaik insertit ois pienellä.
-
-            PreparedStatement panssariLisays = yhteys.prepareStatement(esineUusiPanssariSQL);
-
-            panssariLisays.setString(1, panssari.getNimi());
-            panssariLisays.setInt(2, panssari.getPuolustus());
-
-            panssariLisays.executeUpdate();
-
         } catch (Exception e) {
             System.out.println("Tapahtui virhe " + e);
             e.printStackTrace();
         }
     }
 
-    public void esineHaku(Esinelista haku) {
-        Connection yhteys = null;
+    
 
+    public ArrayList<Esinelista> haeEsine() {
+        Connection yhteys = null;
+        
+        ArrayList<Esinelista> esineet = new ArrayList<>();
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             yhteys = DriverManager.getConnection("jdbc:mysql://10.9.0.60/s1800591", "s1800591", "oxZBgd9j");
 
-            PreparedStatement haeEsine = yhteys.prepareStatement(esineHakuSQL);
+            PreparedStatement esineHaku = yhteys.prepareStatement(esineHakuSQL);
+            esineHaku.setString(1, "nimi");
+            // Koska SQL-haussa on tähti, tulokset tulevat ResultSettinä
+            ResultSet hakutulos = esineHaku.executeQuery();
 
-            haeEsine.setString(1, haku.getNimi());
-            
-
-            haeEsine.executeUpdate();
+            while (hakutulos.next()) {
+                Esinelista haettuEsine = new Esinelista(hakutulos.getInt(1),hakutulos.getString(2),hakutulos.getInt(3),hakutulos.getInt(4));
+                esineet.add(haettuEsine);
+                //System.out.println(hakutulos.getInt(1) + " " + hakutulos.getString(2) + " " + hakutulos.getString(3) + " " + hakutulos.getInt(4));
+            }
 
         } catch (Exception e) {
             System.out.println("Tapahtui virhe " + e);
             e.printStackTrace();
         }
-    }
+        return esineet;
+}
 }
