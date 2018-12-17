@@ -29,6 +29,10 @@ public class Esinelista {
         this.teho = teho;
         this.kesto = kesto;
     }
+    
+    public Esinelista(String nimi) {
+        this.nimi = nimi;
+    }
 
     public String getNimi() {
         return nimi;
