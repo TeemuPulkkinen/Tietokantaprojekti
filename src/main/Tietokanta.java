@@ -26,7 +26,8 @@ public class Tietokanta {
 
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            yhteys = DriverManager.getConnection("jdbc:mysql://10.9.0.60/s1800591", "s1800591", "oxZBgd9j");
+            //tähän tulee käyttäjätunnus ja salasana
+            yhteys = DriverManager.getConnection("jdbc:mysql://10.9.0.60/s1800591", "", "");
 
             PreparedStatement aseLisays = yhteys.prepareStatement(esineUusiAseSQL);
 
